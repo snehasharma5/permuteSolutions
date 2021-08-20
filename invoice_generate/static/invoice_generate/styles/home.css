@@ -1,0 +1,13 @@
+*
+{
+    font-family: 'Baloo 2';
+}
+
+body{
+    font-family: 'Baloo 2';
+}
+
+#invoice_form, #invoice-table
+{
+    margin-top: 2%;
+}

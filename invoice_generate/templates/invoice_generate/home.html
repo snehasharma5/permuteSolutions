@@ -1,0 +1,149 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="{% static 'invoice_generate/styles/home.css' %}">
+    {% block head %}
+        <title>Permute Solutions Pvt. Ltd.</title>
+    {% endblock head %}
+  </head>
+  <body>
+    <nav class="navbar navbar-light bg-light">
+        <a href={% url 'home' %} class="navbar-brand mb-0 h1">PERMUTE SOLUTIONS PVT. LTD.</a>
+    </nav>
+
+    <div class="container">
+        {% block content %}
+            <form method="post" enctype="multipart/form-data" id="invoice_form">
+                {% csrf_token %}
+                <h4>Invoice Form</h4>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <h6>Seller Details:</h6>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroup-sizing-default">Seller Name:</span>
+                                </div>
+                                <input type="text" name="seller_name" maxlength="100" required id="id_seller_name" class="form-control" 
+                                aria-label="Seller Name" aria-describedby="inputGroup-sizing-default" placeholder="Enter Seller Name...">
+                            </div>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroup-sizing-default">Seller Address:</span>
+                                </div>
+                                <textarea name="seller_address" maxlength="200" required id="id_seller_address" class="form-control" 
+                                aria-label="Seller Address" aria-describedby="inputGroup-sizing-default" placeholder="Enter Seller Address..."></textarea>
+                            </div>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroup-sizing-default">Contact Number:</span>
+                                    <span class="input-group-text" id="inputGroup-sizing-default">+91</span>
+                                </div>
+                                <input type="number" name="seller_mob" maxlength="10" id="id_seller_mob" class="form-control" 
+                                aria-label="Contact Number" aria-describedby="inputGroup-sizing-default" placeholder="Enter Contact Number..">
+                            </div>
+                        </div>
+                        
+                        <div class="col-md-6">
+                            <h6>Buyer Details:</h6>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroup-sizing-default">Buyer Name:</span>
+                                </div>
+                                <input type="text" name="buyer_name" maxlength="100" required id="id_buyer_name" class="form-control" 
+                                aria-label="Buyer Name" aria-describedby="inputGroup-sizing-default" placeholder="Enter Buyer Name...">
+                            </div>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroup-sizing-default">Buyer Address:</span>
+                                </div>
+                                <textarea name="buyer_address" maxlength="200" required id="id_buyer_address" class="form-control" 
+                                aria-label="Buyer Address" aria-describedby="inputGroup-sizing-default" placeholder="Enter Buyer Address..."></textarea>
+                            </div>
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroup-sizing-default">Contact Number:</span>
+                                    <span class="input-group-text" id="inputGroup-sizing-default">+91</span>
+                                </div>
+                                <input type="number" name="buyer_mob" maxlength="10" id="id_buyer_mob" class="form-control" 
+                                aria-label="Contact Number" aria-describedby="inputGroup-sizing-default" placeholder="Enter Contact Number..">
+                            </div>
+                        </div>
+                    </div>
+                    <h6>Product Details:</h6>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="input-group mb-3">
+                                <input type="text" name="product_name" maxlength="100" id="id_product_name" class="form-control" 
+                                aria-label="Product Name" aria-describedby="inputGroup-sizing-default" placeholder="Enter Product Name..">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="input-group mb-3">
+                                <input type="number" name="quantity" step="any" required id="id_quantity" class="form-control" 
+                                aria-label="Quantity" aria-describedby="inputGroup-sizing-default" placeholder="Enter Quantity.." value="0">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="input-group mb-3">
+                                <input type="number" name="tax" step="any" required id="id_tax" class="form-control" 
+                                aria-label="Tax" aria-describedby="inputGroup-sizing-default" placeholder="Enter Tax %.." value="0">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="input-group mb-3">
+                                <input type="number" name="price" step="any" required id="id_price" class="form-control" 
+                                aria-label="Price" aria-describedby="inputGroup-sizing-default" placeholder="Enter Price (INR).." oninput = "calc_price()" value="0">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="input-group mb-3">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text" id="inputGroup-sizing-default">Grand Total:</span>
+                                </div>
+                                <input type="number" name="total_price" required id="id_total_price" class="form-control" step="any"
+                                aria-label="Total Price" aria-describedby="inputGroup-sizing-default" placeholder="Total Price..">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12" style="text-align:center;">
+                            <button class="btn btn-info job-btn">GENERATE PDF</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        {% endblock content %}
+
+        <script>
+            function calc_price()
+            {
+                var price_by_unit = document.getElementById("id_price").value;
+                var tax = document.getElementById("id_tax").value;
+                var quantity = document.getElementById("id_quantity").value;
+
+                var total_price = price_by_unit * tax * quantity;
+                if(!isNaN(total_price))
+                    document.getElementById("id_total_price").value = total_price; 
+                    document.getElementById("id_total_price").focus();
+                    document.getElementById("id_total_price").blur();
+            }
+        </script>
+    </div>
+
+
+
+
+
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+  </body>
+</html>

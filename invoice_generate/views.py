@@ -17,7 +17,11 @@ class InvoiceView(CreateView):
     
     def get_context_data(self,*args, **kwargs):
         context = super(InvoiceView, self).get_context_data(*args, **kwargs)
+        formset = ProductDetailsFormset(queryset=ProductDetails.objects.none())
+        context['formset'] = formset
         return context
+
+
 
 
 class PDFView(View):
